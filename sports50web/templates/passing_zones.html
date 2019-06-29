@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Passing Zones</title>
+
+{{ script | safe }}
+
+</head>
+
+<body>
+
+<style>
+
+.myCheckbox {
+	font-size: 20px;
+}
+
+div.myCheckboxText {
+	font-size: 16px;
+}
+
+</style>
+
+<script type="text/javascript">
+var passing_zones_complete = JSON.parse('{{ passing_zones_complete | safe }}');
+var passing_zones_incomplete = JSON.parse('{{ passing_zones_incomplete | safe }}');
+</script>
+
+<script type="text/javascript" src="{% static 'passing_zones.js' %}"></script>
+
+
+<div style="position: fixed; background:#00FF7F; bottom: 20px; left: 20px; border: 3px solid #000000; padding: 3px;">
+  <small style="color:Black; font-size:20px;">Use these options to toggle between statistics</small>  
+  <br>
+    <div class="myCheckboxText">
+      <input type="checkbox" class="myCheckbox" value="2010" checked> 2010 
+      <input type="checkbox" class="myCheckbox" value="2011" checked> 2011
+      <input type="checkbox" class="myCheckbox" value="2012" checked> 2012 
+      <input type="checkbox" class="myCheckbox" value="2013" checked> 2013
+      <input type="checkbox" class="myCheckbox" value="2014" checked> 2014
+      <input type="checkbox" class="myCheckbox" value="2015" checked> 2015
+      <input type="checkbox" class="myCheckbox" value="2016" checked> 2016
+      <input type="checkbox" class="myCheckbox" value="2017" checked> 2017
+    </div>
+
+</div>
+
+  <h3>Completion Percentage by zone targeted</h3>
+  <p>Hover over different squares of the grid to observe the completion percentage of throws to various areas of the field.</p>
+
+<div id="svg2" class="svgs">
+  <script type="text/javascript"> 
+    var svg2 = d3.select("#svg2").append("svg").attr("height","720").attr("width","1000").attr("id","second_svg");
+  
+    var div = d3.select("body").append("div")
+      .attr("class", "tooltip").attr("id","second_svg_tooltip")      
+      .style("opacity", 0).style("font", "24px sans-serif");   
+
+    var imgs2 = svg2.selectAll("image").data([0]);
+        imgs2.enter()
+        .append("svg:image")
+        .attr("xlink:href", "{% static 'qb_cartoon.png' %}")
+        .attr("x", "430")
+        .attr("y", "540")
+        .attr("width", "100")
+        .attr("height", "100");        
+
+    update()
+      </script>
+</div>  
+
+<script type="text/javascript">
+  d3.selectAll(".myCheckbox").on("change",update);
+update();
+</script>
+
+</body>
+</html>

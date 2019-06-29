@@ -1,0 +1,582 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Sports50</title>
+
+<link
+    href="https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css"
+    rel="stylesheet" type="text/css">
+<link
+    href="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.css"
+    rel="stylesheet" type="text/css">
+<link
+    href="https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css"
+    rel="stylesheet" type="text/css">
+ <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" >
+
+<script type="text/javascript" src="{% static 'd3.js' %}"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.js"></script>
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.js"></script>
+<script src="https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.js"></script>
+
+
+<!-- adding fonts -->
+<link href="http://fonts.googleapis.com/css?family=Righteous" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Abel" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet" type="text/css">
+
+
+</head>
+
+<!-- Page content begins. Still working on adding new features, but as of now planning
+to have the home page just have some general cool interactive graphics-->
+<body>
+
+<style>
+	/* Setting up dropdown button */
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content which will only be shown when hovered over dropdown button */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  font-size: 10;
+  font-weight: normal;
+}
+
+/* Format of seperate dropdown links */
+.dropdown-content a {
+  color: black;
+  padding: 3px 3px;
+  text-decoration: none;
+  display: block;
+  font-size: 5;
+}
+
+/* Changes dropdown button color when hovered over */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Shows the dropdown menu when hovered over */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: auto;					
+    height: auto;					
+    padding: 5px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 20px;			
+    pointer-events: none;			
+}
+
+.myCheckbox {
+	font-size: 20px;
+}
+
+div.myCheckboxText {
+	font-size: 16px;
+}
+
+.state-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: auto;					
+    height: auto;					
+    padding: 5px;				
+    font: 12px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 20px;			
+    pointer-events: none;	
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+</style>
+
+<h1><a href="{% url 'home' %}" style="text-decoration: none; color: black">Sports 50</a></h1>
+
+<h2>
+	<!-- Create the dropdown menu, using a for loop over each team in the team model-->
+	<div class="dropdown">
+	  <button onclick="myFunction()" class="dropbtn">Select a Team</button>
+	  <div id="myDropdown" class="dropdown-content">
+		{% for team in teams %}
+				<a href="{% url 'team_info' team.id %}">{{team.full_name}}</a>
+		{% endfor %}    
+	  </div>
+	</div>
+
+	Team specific stats for the {{this_team.0.full_name}}. Navigate to other teams using the dropdown to the left.
+</h2>
+
+<div class="tab">
+  <button class="tablinks" onclick="changeGraphic(event, 'FB_Field')">Football Field</button>
+  <button class="tablinks" onclick="changeGraphic(event, 'Stadium_Map')">Stadium Map</button>
+  <button class="tablinks" onclick="changeGraphic(event, 'Passing_Zones')">Passing Zones</button>
+</div>
+
+
+<h4>Use the options in the light green rectangle to change the statistics you want to observe. <br>
+	The dropdown selects a particular statistic and the checkboxes indicate which years of data to display. <br>
+	These options function for all graphics on the page.
+</h4>
+
+
+
+
+<div style="position: fixed; background:#00FF7F; bottom: 20px; left: 20px; border: 3px solid #000000; padding: 3px;">
+	<small style="color:Black; font-size:20px;">Use these options to toggle between statistics</small>	
+	<br>
+	<select id="stats_choice" onchange="update()">
+	  <option value="touchdown__sum">Touchdowns</option>
+	  <option value="interception__sum">Interceptions</option>
+	  <option value="pick_six__sum">Pick Sixes</option>
+	  <option value="complete__sum">Completions</option>
+	  <option value="incomplete__sum">Incompletions</option>
+	  <option value="percentage__sum">% Complete</option>	  
+	  <option value="sack__sum">Sacks</option>
+	  <option value="fumble__sum">Fumbles</option>
+	  <option value="penalty__sum">Penalties</option>
+	</select>	
+		<div class="myCheckboxText">
+			<input type="checkbox" class="myCheckbox" value="2010" checked> 2010 
+			<input type="checkbox" class="myCheckbox" value="2011" checked> 2011
+			<input type="checkbox" class="myCheckbox" value="2012" checked> 2012 
+			<input type="checkbox" class="myCheckbox" value="2013" checked> 2013
+			<input type="checkbox" class="myCheckbox" value="2014" checked> 2014
+			<input type="checkbox" class="myCheckbox" value="2015" checked> 2015
+			<input type="checkbox" class="myCheckbox" value="2016" checked> 2016
+			<input type="checkbox" class="myCheckbox" value="2017" checked> 2017
+		</div>
+
+</div>
+
+<!-- Begin content area of homepage, which includes some interactice graphics-->
+
+<div id="FB_Field" class="tabcontent">
+<hr>
+	<h3>Statistics by field position</h3>
+	<p>Hover over different areas of the football field below to observe how many instances of the selected statistic occured on plays started from within 
+	each ten yard interval.</p>
+
+<div id="svg1" class="svgs">
+	<script type="text/javascript">
+		var svg = d3.select("#svg1").append("svg").attr("height","600").attr("width","1200");
+	</script>
+</div>
+</div>
+
+<div id="Stadium_Map" class="tabcontent">
+<hr>
+	<h3>Per stadium statistics</h3>
+	<p>Geospatial Representation of statistics in seperate NFL stadiums (excluding Super Bowls). <br>
+		The size of the circle is relative to the number of the chosen statastic in that stadium in the selected years. <br>
+		Hover over each stadium for more information. (Gold circles indicate a Super Bowl has been held in that stadium).
+	</p>
+
+<div id="svg3" class="svgs">
+	<script type="text/javascript">	
+		var svg3 = d3.select("#svg3").append("svg").attr("width", "960").attr("height", "600");
+	</script>
+</div>
+</div>
+
+
+<div id="Passing_Zones" class="tabcontent">
+<hr>
+	<h3>Completion Percentage by zone targeted</h3>
+	<p>Hover over different squares of the grid to observe the completion percentage of throws to various areas of the field.</p>
+
+<div id="svg2" class="svgs">
+	<script type="text/javascript">	
+		var svg2 = d3.select("#svg2").append("svg").attr("height","720").attr("width","1000");	
+	</script>
+</div>
+</div>
+
+<script>
+	function changeGraphic(evt, graphicName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(graphicName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+
+<script>
+
+	// var touchdowns = JSON.parse("{{touchdowns | safe }}");
+	// var all_data = JSON.parse("{{all | safe }}");
+	// var side_of_field_td = JSON.parse("{{touchdowns2 | safe}}");
+	var location_td = JSON.parse('{{location_td | safe}}');
+
+	var passing_zones_complete = JSON.parse('{{ passing_zones_complete | safe }}');
+	var passing_zones_incomplete = JSON.parse('{{ passing_zones_incomplete | safe }}')
+
+
+	var team_logo = JSON.parse('{{ team_logo | safe }}')[0]
+	console.log(team_logo)
+	console.log(typeof team_logo)
+	
+
+	var images = [{"image": "{% static 'football_field_reshaped2.png' %}", "x": "100", "y": "-270", "width": "1000", "height": "1100"},
+	{"image": team_logo, "x": "551", "y": "145", "width": "100", "height": "200"}]
+	console.log(images)
+
+    var imgs = svg.selectAll("image").data(images);
+        imgs.enter()
+        .append("svg:image")
+        .attr("xlink:href", function(d){ return d.image})
+        .attr("x", function(d){ return d.x})
+        .attr("y", function(d){ return d.y})
+        .attr("width", function(d){ return d.width})
+        .attr("height", function(d){ return d.height});
+
+    var imgs2 = svg2.selectAll("image").data([0]);
+        imgs2.enter()
+        .append("svg:image")
+        .attr("xlink:href", "{% static 'qb_cartoon.png' %}")
+        .attr("x", "430")
+        .attr("y", "540")
+        .attr("width", "100")
+        .attr("height", "100");        
+
+
+	
+	var tooltip = d3.select("body")
+	    .append("div")
+	    .style("position", "absolute")
+	    .style("width", "200px")
+	    .style("height", "auto")
+	    .style("padding", "10px")
+	    .style("z-index", "10")
+	    .style("visibility", "hidden")
+	    .style("background-color","white")
+	    .style("-webkit-border-radius", "10px")
+	    .style("-moz-border-radius", "10px")
+	    .style("border-radius", "10px")
+	    .style("-webkit-box-shadow", "4px 4px 10px rgba(0, 0, 0, 0.4)")
+	    .style("-moz-box-shadow", "4px 4px 10px rgba(0, 0, 0, 0.4)")
+	    .style("box-shadow", "4px 4px 10px rgba(0, 0, 0, 0.4)")
+	    .style("pointer-events", "none")
+	    .style("font-size","15px")
+
+
+
+	var passingZones = function(zones_complete) {
+		var zones_complete = zones_complete
+		// for (var i=0; i<zones_complete.length; i++) {
+		// 	console.log(zones_complete[i][0])
+		// 	console.log(zones_complete[i][1])
+		// }
+		svg2.selectAll("rect").data(zones_complete).enter().append("rect").attr("height","250")
+		.attr("width","200")
+		.attr("x",function(d,i){return 197+((i%3)*200)}).attr("y",function(d,i) { if(i<3){return "286"} return"36" }).attr("fill",function(d,i) { if((d[0]/(d[0]+d[1]))<0.5){return "red"} return"green" }).attr("opacity",function(d,i){return (d[0]/(d[0]+d[1]))*0.5 }).attr("stroke","black")
+		.on("mouseover", function(d,i){ 
+			d3.select(this).attr("fill","blue")
+			var xPosition = 40+parseFloat(d3.select(this).attr("x"))+(parseFloat(d3.select(this).attr("width"))/2)
+			var yPosition = parseFloat(d3.select(this).attr("y")) + 1050
+
+			tooltip.text(d[0] + " completions (" + (d[0]/(d[0]+d[1])).toFixed(2)*100 + " Cmp%)").style("visibility", "visible").style("left", xPosition + "px")
+			.style("top", yPosition + "px");})
+		.on("mouseout", function(){
+			d3.select(this).attr("fill",function(d,i) { if((d[0]/(d[0]+d[1]))<0.5){return "red"} return"green" })
+			tooltip.style("visibility", "hidden");});
+
+		svg2.append("text").text("Deep").attr("x","110").attr("y","170").attr("font-size","30")
+		svg2.append("text").text("Short").attr("x","110").attr("y","420").attr("font-size","30")
+		svg2.append("text").text("Left").attr("x","250").attr("y","30").attr("font-size","30")
+		svg2.append("text").text("Middle").attr("x","450").attr("y","30").attr("font-size","30")
+		svg2.append("text").text("Right").attr("x","650").attr("y","30").attr("font-size","30")
+	}    
+
+	var locationTD = function(location_td,s) {
+		svg.selectAll("rect").data(location_td).enter().append("rect").attr("height","436")
+		.attr("width","80")
+		.attr("x",function(d,i){if (i<5) {return 197+(i*80)} else {return 197+(i*80)+5}}).attr("y","27").attr("fill","green").attr("opacity","0.1")
+		.on("mouseover", function(d,i){ 
+			d3.select(this).attr("fill","blue").attr("opacity","0.7")
+			var xPosition = 40+parseFloat(d3.select(this).attr("x"))+(parseFloat(d3.select(this).attr("width"))/2)
+			var yPosition = parseFloat(d3.select(this).attr("y")) + 500		
+
+			tooltip.text(function(){var stat_name = s.options[s.selectedIndex].text;
+				if (stat_name=='% Complete') {
+	            	return d.toFixed(2)+stat_name }
+	            	else {
+	            		if (d!=1) {
+	            			return d+" "+stat_name} 
+	            		else {
+	            			return d+" "+stat_name.substring(0, stat_name.length-1)}}})
+			.style("visibility", "visible").style("left", xPosition + "px")
+			.style("top", yPosition + "px");})
+		.on("mouseout", function(){
+			d3.select(this).attr("fill","green").attr("opacity","0.1")
+			tooltip.style("visibility", "hidden");});
+	}
+
+var width = 960;
+var height = 600;
+
+var projection = d3.geoAlbersUsa()
+    .scale(1250)
+    .translate([width / 2, height / 2]);
+
+var path = d3.geoPath();
+
+var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0); 
+
+var stadium_map = function(stadiums_years, s) {
+	  svg3.selectAll("circle").remove();
+	  
+	  svg3.selectAll("dot")
+		  .data(stadiums_years)
+		  .enter()
+		  .append("circle")
+		  .attr("class", "stadiums")
+		  .attr("cx",function(d){return projection([d[3], d[4]])[0]})
+		  .attr("cy",function(d){return projection([d[3], d[4]])[1]})
+		  .attr("r", function(d){if (d[7]>=1){ return ((Math.log(d[7]+3))**2) } else { return 0 }})
+		  .attr("opacity",0.9)
+		  .style("fill", function(d){if (d[5]==1) { return "gold" } else { return "blue"}})
+	        .on("mouseover", function(d) {	
+	        	var stat_name = s.options[s.selectedIndex].text;
+	        	console.log(stat_name)	
+	            div.transition()		
+	                .duration(200)		
+	                .style("opacity", .9);		
+	            div.html(function(){if (stat_name=='% Complete') {
+	            	return d[2] + "<br/>" + "-" + "<br/>" + d[1] + "," + d[0] + "<br/>" + "(" + d[7].toFixed(2) + stat_name+")"}
+	            	else {
+	            		return d[2] + "<br/>" + "-" + "<br/>" + d[1] + "," + d[0] + "<br/>" + "(" + d[7] + " "+stat_name+")"
+	            	}})
+	                .style("left", (d3.event.pageX) + "px")		
+	                .style("top", (d3.event.pageY - 28) + "px");	
+	            })					
+	        .on("mouseout", function(d) {		
+	            div.transition()		
+	                .duration(500)		
+	                .style("opacity", 0);	
+
+				});                 
+	          
+
+}			
+
+	svg3.append("rect").attr("height",height).attr("width",width).attr("fill","white").attr("opacity",0)
+	
+	d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+	  if (error) throw error;
+
+	  svg3.append("g")
+	      .attr("class", "states")
+	    .selectAll("path")
+	    .data(topojson.feature(us, us.objects.states).features)
+	    .enter().append("path")
+	      .attr("d", path);
+
+	  svg3.append("path")
+	      .attr("class", "state-borders")
+	      .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+
+		var stadium_original = JSON.parse('{{stadiums | safe}}');  
+     	var s = document.getElementById("stats_choice");
+      	var stats_choice = s.options[s.selectedIndex].value;			
+		  for (var j = 0; j < stadium_original.length; j++) {
+		  	var this_stad =0
+		  for(var i = 2010; i < 2018; i++) { this_stad = this_stad + stadium_original[j][6][stats_choice][i];};
+		stadium_original[j].push(this_stad)	}
+		stadium_map(stadium_original, s)	      
+
+	 });
+
+
+
+
+
+
+      d3.selectAll(".myCheckbox").on("change",update);
+      update();
+
+      function update(){
+      	var s = document.getElementById("stats_choice");
+      	var stats_choice = s.options[s.selectedIndex].value;
+      	console.log(stats_choice)
+        var seasons = [];
+        d3.selectAll(".myCheckbox").each(function(d){
+          cb = d3.select(this);
+          if(cb.property("checked")){
+            seasons.push(cb.property("value"));
+          }
+        });
+      	var newData = [0,0,0,0,0,0,0,0,0,0]
+      	var arrayLength = seasons.length
+        var zones_complete_newData = [0,0,0,0,0,0]
+        var zones_incomplete_newData = [0,0,0,0,0,0]
+		var stadiums = JSON.parse('{{stadiums | safe}}');          
+        var stadiums_new = []
+
+        if(seasons.length > 0){
+          for(var i = 0; i < arrayLength; i++) { newData = newData.map(function(num,idx){ return num + location_td[stats_choice][seasons[i]][idx];})}
+          for(var i = 0; i < arrayLength; i++) { zones_complete_newData = zones_complete_newData.map(function(num,idx){ return num + passing_zones_complete[seasons[i]][idx];})}   
+          for(var i = 0; i < arrayLength; i++) { zones_incomplete_newData = zones_incomplete_newData.map(function(num,idx){ return num + passing_zones_incomplete[seasons[i]][idx];})}     
+          for (var j = 0; j < stadiums.length; j++) {
+          	var this_stad =0
+          	var seasons_played_here = 0
+          	for(var i = 0; i < arrayLength; i++) { if (stadiums[j][6][stats_choice][seasons[i]]>0) {
+          		this_stad = this_stad + stadiums[j][6][stats_choice][seasons[i]];
+          		seasons_played_here = seasons_played_here + 1;}
+          	}
+			if (stats_choice == 'percentage__sum'){
+				stadiums[j].push((this_stad/seasons_played_here)*100)}
+			else {
+				stadiums[j].push(this_stad)
+			}
+          }
+             
+          	
+        } else {
+          newData = newData;  
+          zones_complete_newData = zones_complete_newData 
+          zones_incomplete_newData = zones_incomplete_newData  
+        }            
+      
+      	var attempts_new = []
+		for (var i=0; i<zones_incomplete_newData.length; i++) {
+			var year = [zones_complete_newData[i],zones_incomplete_newData[i]]
+			attempts_new.push(year)
+		}  
+		
+
+		if (stats_choice == 'percentage__sum'){
+			var newData = newData.map(function(element) {
+			return (element/seasons.length)*100;
+		});
+		}
+
+        passingZones(attempts_new)
+        locationTD(newData, s)
+        stadium_map(stadiums, s)
+
+    }
+
+
+	function handleMouseOver(d, i) {  // Add interactivity
+
+	    // Use D3 to select element, change color and size
+	    d3.select(this).attr({
+	      fill: "orange",
+	    });
+
+	    // Specify where to put label of text
+	    svg.append("text").text("hello world").attr("x",function(d,i){return 60*i}).attr("y",function(d,i){return 800-(d*2)})  // Create an id for text so we can select it later for removing on mouseout
+	  }
+
+	function handleMouseOut(d, i) {
+	    // Use D3 to select element, change color back to normal
+	    d3.select(this).attr({
+	      fill: "black",
+	    });
+
+	    // Select text by id and then remove
+	    d3.select("#t" + d + "-" + i).remove();  // Remove text location
+	  }	   
+
+
+</script>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+</body>
+</html>

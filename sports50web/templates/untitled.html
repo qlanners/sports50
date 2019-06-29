@@ -1,0 +1,15 @@
+!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Field Breakdown Passing</title>
+
+{{ script | safe }}
+</head>
+<body>
+<script type="text/javascript">
+  var location_td = JSON.parse('{{location_td | safe}}');
+  update()  
+</script>	
+</body>
+</html>

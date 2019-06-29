@@ -1,0 +1,67 @@
+body {
+margin: 0;
+font-family: sans-serif;
+font-size: 11px;
+background: url(back_text/creampaper.png) repeat 0 0;
+}
+
+circle{
+	fill: red;
+}
+
+line{
+	stroke: black;
+	stroke-width: 4;
+}
+
+h1 {
+	color: black;
+	font-family: 'Righteous';
+	text-align: center;
+	font-size: 40px;
+	padding: 20px;
+	background: #87CEFA;
+}
+
+h2 {
+	color: #87CEFA;
+	font-family: 'Abel';
+	font-size: 20px;
+	padding: 10px;
+	background: black;
+}
+
+h3 {
+	color: black;
+	font-family: 'Merriweather';
+	font-size: 20px;
+	padding-left: 140px;
+	text-decoration: underline;
+}
+
+h4 {
+	color: slategrey;
+	font-family: 'Abel';
+	font-size: 16px;
+	padding-left:152px;
+}
+
+h5 {
+	color: black;
+	font-family: 'Righteous';
+	text-align: left;
+	font-size: 20px;
+	padding: 20px;
+	background: #87CEFA;
+}
+
+p {
+	color: black;
+	font-family: 'Abel';
+	font-size: 15px;
+	padding-left: 140px;
+}
+
+.svgs {
+	text-align: center;
+}

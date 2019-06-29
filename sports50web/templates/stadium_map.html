@@ -1,0 +1,119 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Stadium Map</title>
+
+{{ script | safe }}
+
+</head>
+
+<body>
+
+<style>
+
+.myCheckbox {
+	font-size: 20px;
+}
+
+div.myCheckboxText {
+	font-size: 16px;
+}
+
+.state-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+</style>
+
+  <h3>Per stadium statistics</h3>
+  <p>Geospatial Representation of statistics in seperate NFL stadiums (excluding Super Bowls). <br>
+    The size of the circle is relative to the number of the chosen statastic in that stadium in the selected years. <br>
+    Hover over each stadium for more information. (Gold circles indicate a Super Bowl has been held in that stadium).
+  </p>
+
+<div class="tab">
+  <div class="nav nav-tabs" id="fieldTabs">
+    <button id="map_passing_button" onclick="document.getElementById('map_passing').click();"><a id="map_passing" class="tablinks" href="#stats2" data-url="{% url 'stadium_map_passing' team_id %}">Passing</a></button>
+    <button id="map_rushing_button" onclick="document.getElementById('map_rushing').click();"><a id="map_rushing" class="tablinks" href="#stats2" data-url="{% url 'stadium_map_rushing' team_id %}">Rushing</a></button>    
+</div>
+</div>
+
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="stats2"></div>
+  </div>
+
+<script type="text/javascript">
+  var width = 960;
+  var height = 600;
+
+
+  var projection = d3.geoAlbersUsa()
+      .scale(1250)
+      .translate([width / 2, height / 2]);
+
+  var path = d3.geoPath();
+</script>
+
+<div id="svg3" class="svgs">
+  <script type="text/javascript">
+  var svg3 = d3.select("#svg3").append("svg").attr("width", "960").attr("height", "600").attr("id", "third_svg");
+
+  var div = d3.select("body").append("div")
+      .attr("class", "tooltip").attr("id","third_svg_tooltip")      
+      .style("opacity", 0); 
+
+  svg3.append("rect").attr("height",height).attr("width",width).attr("fill","white").attr("opacity",0)   
+
+  d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+    if (error) throw error;
+
+    svg3.append("g")
+        .attr("class", "states")
+      .selectAll("path")
+      .data(topojson.feature(us, us.objects.states).features)
+      .enter().append("path")
+        .attr("d", path);
+
+    svg3.append("path")
+        .attr("class", "state-borders")
+        .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+   });    
+  </script>
+</div>
+
+<script type="text/javascript">
+$('#fieldTabs a').click(function (e) {
+  e.preventDefault();
+  
+  var url = $(this).attr("data-url");
+    var href = this.hash;
+    var pane = $(this);
+  
+
+  // ajax load from data-url
+  $(href).load(url)
+});
+
+document.getElementById("map_passing_button").click();
+</script>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+</body>
+</html>

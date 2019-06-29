@@ -1,0 +1,32 @@
+﻿31,P,NFL,NFCN,US,MN,Minneapolis,Vikings,U.S. Bank Stadium,44.9738,93.2578,Minnesota Vikings,MIN,1961,0,2
+32,P,NFL,NFCN,US,IL,Chicago,Bears,Soldier Field,41.8623,87.6167,Chicago Bears,CHI,1919,1,2
+33,P,NFL,NFCN,US,WI,Green Bay,Packers,Lambeau Field,44.5013,88.0622,Green Bay Packers,GB,1919,4,2
+34,P,NFL,NFCN,US,MI,Detroit,Lions,Ford Field,42.34,83.0456,Detroit Lions,DET,1929,0,2
+35,P,NFL,NFCE,US,PA,Philadelphia,Eagles,Lincoln Financial Field,39.9008,75.1675,Philadelphia Eagles,PHI,1933,1,2
+36,P,NFL,NFCE,US,TX,Dallas,Cowboys,AT&T Stadium,32.7473,97.0945,Dallas Cowboys,DAL,1960,5,2
+37,P,NFL,NFCE,US,DC,Washington DC,Redskins,FedEx Field,38.9076,76.8645,Washington Redskins,WSH,1932,3,2
+38,P,NFL,NFCE,US,NY,New York,Giants,MetLife Stadium,40.8128,74.0742,New York Giants,NYG,1925,4,2
+39,P,NFL,NFCW,US,CA,Los Angeles,Rams,Los Angeles Coliseum,34.0141,118.2879,Los Angeles Rams,LAR,1936,1,2
+40,P,NFL,NFCW,US,WA,Seattle,Seahawks,CenturyLink Field,47.5952,122.3316,Seattle Seahawks,SEA,1974,1,2
+41,P,NFL,NFCW,US,AZ,Glendale,Cardinals,University of Phoenix Stadium ,33.5276,112.2626,Arizona Cardinals,ARI,1898,0,2
+42,P,NFL,NFCW,US,CA,San Francisco,49ers,Levi’s Stadium,37.4032,121.9698,San Francisco 49ers,SF,1946,5,2
+43,P,NFL,NFCS,US,LA,New Orleans,Saints,Mercedes-Benz Superdome,29.9511,90.0812,New Orleans Saints,NO,1967,1,2
+44,P,NFL,NFCS,US,NC,Charlotte,Panthers,Bank of America Stadium,35.2258,80.8528,Carolina Panthers,CAR,1993,0,2
+45,P,NFL,NFCS,US,GA,Atlanta,Falcons,Mercedes-Benz Stadium,29.9505,90.0753,Atlanta Falcons,ATL,1965,0,2
+46,P,NFL,NFCS,US,FL,Tampa Bay,Buccaneers,Raymond James Stadium,27.9759,82.5033,Tampa Bay Buccaneers,TB,1974,1,2
+47,P,NFL,AFCN,US,PA,Pittsburgh,Steelers,Heinz Field,40.4468,80.0158,Pittsburgh Steelers,PIT,1933,6,2
+48,P,NFL,AFCN,US,MD,Baltimore,Ravens,M&T Bank Stadium,39.278,76.6227,Baltimore Ravens,BAL,1996,2,2
+49,P,NFL,AFCN,US,OH,Cincinnati,Bengals,Paul Brown Stadium,39.0955,84.5161,Cincinnati Bengals,CIN,1967,0,2
+50,P,NFL,AFCN,US,OH,Cleveland,Browns,FirstEnergy Stadium,41.5061,81.6995,Cleveland Browns,CLE,1946,0,2
+51,P,NFL,AFCE,US,MA,Foxborough,Patriots,Gillette Stadium,42.0909,71.2643,New England Patriots,NE,1960,5,2
+52,P,NFL,AFCE,US,NY,Buffalo,Bills,New Era Field,42.7737,78.787,Buffalo Bills,BUF,1960,0,2
+53,P,NFL,AFCE,US,FL,Miami,Dolphins,Hard Rock Stadium,25.958,80.2389,Miami Dolphins,MIA,1966,2,2
+54,P,NFL,AFCE,US,NY,New York,Jets,MetLife Stadium,40.8128,74.0742,New York Jets,NYJ,1960,1,2
+55,P,NFL,AFCW,US,MO,Kansas City,Chiefs,Arrowhead Stadium,39.0489,94.4839,Kansas City Chiefs,KC,1960,1,2
+56,P,NFL,AFCW,US,CA,Los Angeles,Chargers,StubHub Center,33.8644,118.2611,Los Angeles Chargers,LAC,1960,0,2
+57,P,NFL,AFCW,US,CA,Oakland,Raiders,Oakland-Alameda County Coliseum ,37.7516,122.2005,Oakland Raiders,OAK,1960,3,2
+58,P,NFL,AFCW,US,CO,Denver,Broncos,Sports Authority Field at Mile High ,39.7439,105.0201,Denver Broncos,DEN,1960,3,2
+59,P,NFL,AFCS,US,FL,Jacksonville,Jaguars,TIAA Bank Field,30.324,81.6373,Jacksonville Jaguars,JAX,1993,0,2
+60,P,NFL,AFCS,US,TN,Nashville,Titans,Nissan Stadium,36.1665,86.7713,Tennessee Titans,TEN,1960,0,2
+61,P,NFL,AFCS,US,IN,Indianapolis,Colts,Lucas Oil Stadium,39.7601,86.1639,Indianapolis Colts,IND,1953,2,2
+62,P,NFL,AFCS,US,TX,Houston,Texans,NRG Stadium,29.6847,95.4107,Houston Texans,HOU,2002,0,2

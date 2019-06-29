@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Stadium Map</title>
+
+{{ script | safe }}
+
+</head>
+
+<body>
+
+<script type="text/javascript">
+  var stadiums = JSON.parse('{{stadiums | safe}}');
+</script>
+
+<script type="text/javascript" src="{% static 'stadium_map.js' %}"></script>
+
+
+<div style="position: fixed; background:#00FF7F; bottom: 20px; left: 20px; border: 3px solid #000000; padding: 3px;">
+  <small style="color:Black; font-size:20px;">Use these options to toggle between statistics</small>  
+  <br>
+  <select id="stats_choice" onchange="update()">
+    <option value="touchdown__sum">Touchdowns</option>
+    <option value="interception__sum">Interceptions</option>
+    <option value="pick_six__sum">Pick Sixes</option>
+    <option value="complete__sum">Completions</option>
+    <option value="incomplete__sum">Incompletions</option>
+    <option value="percentage__sum">% Complete</option>
+    <option value="sack__sum">Sacks</option>
+    <option value="fumble__sum">Fumbles</option>
+    <option value="penalty__sum">Penalties</option>
+  </select> 
+    <div class="myCheckboxText">
+      <input type="checkbox" class="myCheckbox" value="2010" checked> 2010 
+      <input type="checkbox" class="myCheckbox" value="2011" checked> 2011
+      <input type="checkbox" class="myCheckbox" value="2012" checked> 2012 
+      <input type="checkbox" class="myCheckbox" value="2013" checked> 2013
+      <input type="checkbox" class="myCheckbox" value="2014" checked> 2014
+      <input type="checkbox" class="myCheckbox" value="2015" checked> 2015
+      <input type="checkbox" class="myCheckbox" value="2016" checked> 2016
+      <input type="checkbox" class="myCheckbox" value="2017" checked> 2017
+    </div>
+
+</div>	
+
+  <script type="text/javascript">
+  d3.selectAll(".myCheckbox").on("change",update);
+update();  
+</script>	

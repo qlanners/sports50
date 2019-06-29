@@ -1,0 +1,30 @@
+1,P,MLB,NLW,US,AZ,Phoenix,Diamondbacks,Chase Field,33.4455,112.0667,Arizona Diamondbacks,ARI,1961,1,1
+2,P,MLB,NLW,US,CA,San Francisco,Giants,AT&T Park,37.7786,112.3893,San Francisco Giants,SF,1883,3,1
+3,P,MLB,NLW,US,CA,Los Angeles,Dodgers,Dodger Stadium,34.0739,118.2400,Los Angeles Dodgers,LAD,1884,5,1
+4,P,MLB,NLW,US,CO,Denver,Rockies,Coors Field,39.7559,104.9942,Colorado Rockies,COL,1993,0,1
+5,P,MLB,NLW,US,CA,San Diego,Padres,Petco Park,32.7076,117.1570,San Diego Padres,SD,1969,0,1
+6,P,MLB,ALW,US,TX,Houston,Astros,Minute Maid Park,29.7573,95.3555,Houston Astros,HOU,1962,1,1
+7,P,MLB,ALW,US,WA,Seattle,Mariners,Safeco Field,47.5914,122.3325,Seattle Mariners,SEA,1977,0,1
+8,P,MLB,ALW,US,CA,Los Angeles,Angels,Angel Stadium,33.8003,117.8827,Los Angeles Angels,LAA,1961,1,1
+9,P,MLB,ALW,US,CA,Oakland,Athletics,Oakland Coliseum,37.7516,122.2005,Oakland Athletics,OAK,1901,4,1
+10,P,MLB,ALW,US,TX,Arlington,Rangers,Globe Life Park,32.7512,97.0832,Texas Rangers,TEX,1961,0,1
+11,P,MLB,NLC,US,WI,Milwaukee,Brewers,Miller Park,43.0280,87.9712,Milwaukee Brewers,MIL,1969,0,1
+12,P,MLB,NLC,US,IL,Chicago,Cubs,Wrigley Field,41.9484,87.6553,Chicago Cubs,CHC,1874,3,1
+13,P,MLB,NLC,US,MO,St. Louis,Cardinals,Busch Stadium,38.6226,90.1928,St. Louis Cardinals,STL,1882,11,1
+14,P,MLB,NLC,US,PA,Pittsburgh,Pirates,PNC Park,40.4469,80.0057,Pittsburgh Pirates,PIT,1882,5,1
+15,P,MLB,NLC,US,OH,Cincinnati,Reds,Great American Ball Park,39.0979,84.5082,Cincinnati Reds,CIN,1882,5,1
+16,P,MLB,ALC,US,OH,Cleveland,Indians,Progressive Field,41.4962,81.6852,Cleveland Indians,CLE,1901,2,1
+17,P,MLB,ALC,US,MI,Detroit,Tigers,Comerica Park,42.3390,83.0485,Detroit Tigers,DET,1901,4,1
+18,P,MLB,ALC,US,MN,Minneapolis,Twins,Target Field,44.9818,93.2775,Minnesota Twins,MIN,1901,2,1
+19,P,MLB,ALC,US,IL,Chicago,White Sox,Guaranteed Rate Field,41.8299,87.6338,Chicago White Sox,CHW,1901,3,1
+20,P,MLB,ALC,US,MO,Kansas City,Royals,Kauffman Stadium,39.0517,94.4803,Kansas City Royals,KAN,1969,2,1
+21,P,MLB,NLE,US,GA,Atlanta,Braves,Suntrust Park,33.8908,84.4678,Atlanta Braves,ATL,1871,1,1
+22,P,MLB,NLE,US,DC,Washington DC,Nationals,Nationals Park,38.8730,77.0074,Washington Nationals,WAS,1969,0,1
+23,P,MLB,NLE,US,PA,Philadelphia,Phillies,Citizens Bank Park,39.9061,75.1665,Philadelphia Phillies,PHI,1883,2,1
+24,P,MLB,NLE,US,NY,Queens,Mets,Citi Field,40.7571,73.8458,New York Mets,NYM,1962,2,1
+25,P,MLB,NLE,US,FL,Miami,Marlins,Marlins Park,25.7781,80.2197,Miami Marlins,FLA,1993,2,1
+26,P,MLB,ALE,US,NY,Bronx,Yankees,Yankee Stadium,40.8296,73.9262,New York Yankees,NYY,1903,27,1
+27,P,MLB,ALE,US,MA,Boston,Red Sox,Fenway Park,42.3467,71.0972,Boston Red Sox,BOS,1901,8,1
+28,P,MLB,ALE,CAN,ON,Toronto,Blue Jays,Rogers Centre,43.6414,79.3894,Toronto Blue Jays,TOR,1977,2,1
+29,P,MLB,ALE,US,FL,St. Petersburg,Rays,Tropicana Field,27.7682,82.6534,Tampa Bay Rays,TB,1998,0,1
+30,P,MLB,ALE,US,MD,Baltimore,Orioles,Camden Yards,39.2840,76.6199,Baltimore Orioles,BAL,1901,3,1

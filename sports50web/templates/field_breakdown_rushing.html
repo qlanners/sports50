@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Field Breakdown Rushing</title>
+
+{{ script | safe }}
+</head>
+<body>
+<script type="text/javascript">console.log("welp")</script>
+
+<script type="text/javascript">
+  var location_td = JSON.parse('{{location_td | safe}}');
+</script>
+  <script type="text/javascript" src="{% static 'field_breakdown.js' %}"></script>
+<div style="position: fixed; background:#00FF7F; bottom: 20px; left: 20px; border: 3px solid #000000; padding: 3px;">
+  <small style="color:Black; font-size:20px;">Use these options to toggle between statistics</small>  
+  <br>
+  <select id="stats_choice" onchange="update()">
+    <option value="touchdown__sum">Touchdowns</option>
+    <option value="tackle_for_loss__sum">Tackled for Loss</option>
+    <option value="fumble__sum">Fumbles</option>
+    <option value="penalty__sum">Penalties</option>
+  </select> 
+    <div class="myCheckboxText">
+      <input type="checkbox" class="myCheckbox" value="2010" checked> 2010 
+      <input type="checkbox" class="myCheckbox" value="2011" checked> 2011
+      <input type="checkbox" class="myCheckbox" value="2012" checked> 2012 
+      <input type="checkbox" class="myCheckbox" value="2013" checked> 2013
+      <input type="checkbox" class="myCheckbox" value="2014" checked> 2014
+      <input type="checkbox" class="myCheckbox" value="2015" checked> 2015
+      <input type="checkbox" class="myCheckbox" value="2016" checked> 2016
+      <input type="checkbox" class="myCheckbox" value="2017" checked> 2017
+    </div>
+
+</div>
+
+  <script type="text/javascript">
+  d3.selectAll(".myCheckbox").on("change",update);
+update();  
+</script>	
+</body>
+</html>

@@ -1,0 +1,64 @@
+# Modify this code to update the DB schema diagram.
+# To reset the sample schema, replace everything with
+# two dots ('..' - without quotes).
+
+Sports
+-
+ID PK int
+sport_name string
+
+
+Teams
+-
+ID PK int
+sportID int FK >- Sports.ID
+level Null varchar
+league Null char
+division Null varchar
+country string
+state Null char
+city Null string
+mascot Null string
+home_stadium_name Null string
+hame_stadium_lat Null int
+home_stadium_lon Null int
+abbrev Null char
+first_year Null int
+titles int4
+
+
+Players
+- 
+ID PK int
+first_name string
+last_name string
+d_o_b date
+home_country string
+home_state Null string
+home_city Null string
+college Null string
+college_state Null string
+
+TeamList
+-
+TeamID int FK >- Teams.ID
+PlayerID int FK >- Players.ID
+
+GameLog
+-
+ID PK int
+SportID int FK >- Sports.ID
+team_oneID int FK >- Teams.ID
+team_twoID int FK >- Teams.ID
+home_team int
+winning_team int
+team_one_points int
+team_two_points int
+
+Baseball_Stats
+-
+ID PK int
+SportID int FK >- Sports.ID
+TeamID int FK >- Teams.ID
+PlayerID int FK >- Players.ID
+GameID int FK >- GameLog.ID
