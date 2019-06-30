@@ -121,18 +121,6 @@ to have the home page just have some general cool interactive graphics-->
 
 
 /* Tooltip that is used on all graphics. Customized inside of the various graphic html files if needed. */
-div.tooltip {	
-    position: absolute;			
-    text-align: center;			
-    width: auto;					
-    height: auto;					
-    padding: 5px;				
-    font: 12px sans-serif;		
-    background: lightsteelblue;	
-    border: 0px;		
-    border-radius: 20px;			
-    pointer-events: none;			
-}
 
 </style>
 
@@ -158,7 +146,7 @@ div.tooltip {
     <button id="field_button" onclick="document.getElementById('field').click();"><a id="field" class="tablinks" href="#stats" data-url="{% url 'field_breakdown' 0 %}">Field Breakdown</a></button>
     <button id="map_button" onclick="document.getElementById('map').click();"><a id="map" class="tablinks" href="#stats" data-url="{% url 'stadium_map' 0 %}">Stadium Map</a></button>
     <button id="zones_button" onclick="document.getElementById('zones').click();"><a id="zones" class="tablinks" href="#stats" data-url="{% url 'passing_zones' 0 %}">Passing Zones</a></button> 
-  <button id="fp_button" onclick="document.getElementById('fp').click();"><a id="fp" class="tablinks" href="#stats" data-url="{% url 'fp_bkdwn' 0 %}">Field Position Breakdown</a></button>        
+  <button id="fp_button" onclick="document.getElementById('fp').click();"><a id="fp" class="tablinks" href="#stats" data-url="{% url 'fp_bkdwn' 0 %}">Field Position Breakdown</a></button>      
 </div>
 </div>
 

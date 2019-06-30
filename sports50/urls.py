@@ -18,6 +18,8 @@ from django.contrib import admin
 
 from sports50web import views
 
+#All URL patterns are stored in the master sports50 folder. These could also be moved to a URL file in the sports50web folder,
+#but for now they work here just as well.
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,9 +28,11 @@ urlpatterns = [
     url(r'^field_breakdown/(\d+)/', views.field_breakdown, name='field_breakdown'),
     url(r'^stadium_map/(\d+)/', views.stadium_map, name='stadium_map'),
     url(r'^passing_zones/(\d+)/', views.passing_zones, name='passing_zones'),
+    url(r'^fp_bkdwn/(\d+)/', views.fp_bkdwn, name='fp_bkdwn'),
     url(r'^field_breakdown_passing/(\d+)/', views.field_breakdown_passing, name='field_breakdown_passing'),
     url(r'^field_breakdown_rushing/(\d+)/', views.field_breakdown_rushing, name='field_breakdown_rushing'),
     url(r'^stadium_map_passing/(\d+)/', views.stadium_map_passing, name='stadium_map_passing'),
     url(r'^stadium_map_rushing/(\d+)/', views.stadium_map_rushing, name='stadium_map_rushing'),
-    url(r'^fp_bkdwn/(\d+)/', views.fp_bkdwn, name='fp_bkdwn')
+    url(r'^fp_bkdwn_passing/(\d+)/', views.fp_bkdwn_passing, name='fp_bkdwn_passing')
+    
 ]

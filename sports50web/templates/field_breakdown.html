@@ -1,85 +1,89 @@
+<!-- Load in all of the static files from .static -->
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Field Breakdown</title>
 
-{{ script | safe }}
+  <head>
+    <meta charset="utf-8">
+    <title>Field Breakdown</title>
+    {{ script | safe }}
+  </head>
 
-</head>
+<!-- Import in the style sheet -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" >
 
-<body>
-<style>
-.myCheckbox {
-  font-size: 20px;
-}
-
-div.myCheckboxText {
-  font-size: 16px;
-}
-
-</style>
+  <body>
+    <!-- Create header and description of page -->
+    <h3>Statistics by field position</h3>
+    <p>Hover over different areas of the football field below to observe how many instances of the selected statistic occured on plays started from within each ten yard interval.</p>
 
 
+  <!-- Creates tabs that allow user to navigate between different statistic type -->
+    <div class="tab">
+      <div class="nav nav-tabs" id="fieldTabs">
+        <button id="field_passing_button" onclick="document.getElementById('field_passing').click();"><a id="field_passing" class="tablinks" href="#field_stats" data-url="{% url 'field_breakdown_passing' team_id %}">Passing</a></button>
+        <button id="field_rushing_button" onclick="document.getElementById('field_rushing').click();"><a id="field_rushing" class="tablinks" href="#field_stats" data-url="{% url 'field_breakdown_rushing' team_id %}">Rushing</a></button>    
+      </div>
+    </div>
 
-  <h3>Statistics by field position {{ request }}</h3>
-  <p>Hover over different areas of the football field below to observe how many instances of the selected statistic occured on plays started from within 
-  each ten yard interval.</p>
+  <!-- Sends the chosen tab to the page -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="field_stats"></div>
+    </div>  
 
-<div class="tab">
-  <div class="nav nav-tabs" id="fieldTabs">
-    <button id="field_passing_button" onclick="document.getElementById('field_passing').click();"><a id="field_passing" class="tablinks" href="#stats2" data-url="{% url 'field_breakdown_passing' team_id %}">Passing</a></button>
-    <button id="field_rushing_button" onclick="document.getElementById('field_rushing').click();"><a id="field_rushing" class="tablinks" href="#stats2" data-url="{% url 'field_breakdown_rushing' team_id %}">Rushing</a></button>    
-</div>
-</div>
 
-  <div class="tab-content">
-    <div class="tab-pane active" id="stats2"></div>
-  </div>  
+  <!-- Create a div to hold the svg -->
+    <div id="field_svg_div" class="svgs">
+      <script type="text/javascript">
 
-<div id="svg1" class="svgs">
-  <script type="text/javascript">
-      var svg = d3.select("#svg1").append("svg").attr("height","600").attr("width","1200").attr("id","first_svg");
+        // Create the svg variable with the given height and width
+        var height = 600
+        var width = 1200
+        var svg = d3.select("#field_svg_div").append("svg").attr("height",height).attr("width",width).attr("id","field_svg");
 
-  var div = d3.select("body").append("div")
-      .attr("class", "tooltip").attr("id","first_svg_tooltip")      
-      .style("opacity", 0).style("font", "24px sans-serif"); 
+        // Create a varibale pop_up which will hold the text that pops up when field sections are hovered over
+        // Takes style from class hover_text.
+        var pop_up = d3.select("#field_svg_div").append("div")
+          .attr("class", "hover_text").attr("id","field_breakdown_pop_up")      
+          .style("opacity", 0); 
 
-  var team_logo = JSON.parse('{{ team_logo | safe }}')[0]  
+        // Retrieve the team_logo variable from views.py
+        var team_logo = JSON.parse('{{ team_logo | safe }}')[0]  
 
-  console.log(team_logo)
-  console.log(typeof team_logo)      
+        // Create an array containing both the football field png and the logo png along with necessary coordinates
+        // to place them on the field. Makes it easier to lay the logo on top of the field when we attach the images to the svg.
+        var images = [{"image": "{% static 'football_field_reshaped2.png' %}", "x": "100", "y": "-270", "width": "1000", "height": "1100"},
+                      {"image": team_logo, "x": "551", "y": "145", "width": "100", "height": "200"}]
+        
+        // Attach both the field and logo images to the svg
+        var imgs = svg.selectAll("image").data(images).enter().append("svg:image")
+                      .attr("xlink:href", function(d){ return d.image})
+                      .attr("x", function(d){ return d.x})
+                      .attr("y", function(d){ return d.y})
+                      .attr("width", function(d){ return d.width})
+                      .attr("height", function(d){ return d.height});
+      </script>
+    </div>
 
-    var images = [{"image": "{% static 'football_field_reshaped2.png' %}", "x": "100", "y": "-270", "width": "1000", "height": "1100"},
-  {"image": team_logo, "x": "551", "y": "145", "width": "100", "height": "200"}]
-    var imgs = svg.selectAll("image").data(images);
-        imgs.enter()
-        .append("svg:image")
-        .attr("xlink:href", function(d){ return d.image})
-        .attr("x", function(d){ return d.x})
-        .attr("y", function(d){ return d.y})
-        .attr("width", function(d){ return d.width})
-        .attr("height", function(d){ return d.height});
-  </script>
-</div>
-<script type="text/javascript">
-$('#fieldTabs a').click(function (e) {
-  e.preventDefault();
-  
-  var url = $(this).attr("data-url");
-    var href = this.hash;
-    var pane = $(this);
-  
+    <script type="text/javascript">
+      // Create a function that loads the url corresponding to the correct field_breakdown stat that is selected from the tabs
+      // at the top of the page.
+      $('#fieldTabs a').click(function (e) {
+        e.preventDefault();
+        
+        var url = $(this).attr("data-url");
+        var href = this.hash;
+        var pane = $(this);
 
-  // ajax load from data-url
-  $(href).load(url)
-});
+        // Load the correct url
+        $(href).load(url)
+      });
 
-  console.log('dang')
-    document.getElementById("field_passing_button").click();
-console.log('hello')
-</script>
-</body>
+      // When the page is first loaded, select field_breakdown to show the passing statistics
+      document.getElementById("field_passing_button").click();
+    </script>
+
+  </body>
+
 </html>

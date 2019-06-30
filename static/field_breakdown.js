@@ -1,6 +1,6 @@
 var locationTD = function(location_td,s) {
-  var svg = d3.select("#first_svg")
-  var div = d3.select("#first_svg_tooltip")
+  var svg = d3.select("#field_svg")
+  var pop_up = d3.select("#field_breakdown_pop_up")
   svg.selectAll("rect").remove();
   svg.selectAll("rect").data(location_td).enter().append("rect").attr("height","436")
   .attr("width","80")
@@ -10,10 +10,10 @@ var locationTD = function(location_td,s) {
     var xPosition = 40+parseFloat(d3.select(this).attr("x"))+(parseFloat(d3.select(this).attr("width"))/2)
     var yPosition = parseFloat(d3.select(this).attr("y")) + 500   
     var stat_name = s.options[s.selectedIndex].text; 
-    div.transition()    
+    pop_up.transition()    
                   .duration(200)    
                   .style("opacity", .9);    
-              div.html(function(){
+              pop_up.html(function(){
                 if (stat_name=='% Complete') {
                   return d.toFixed(2)+stat_name}
                 else {
@@ -23,7 +23,7 @@ var locationTD = function(location_td,s) {
               })      
         .on("mouseout", function(d) {  
               d3.select(this).attr("fill","green").attr("opacity","0.1") 
-              div.transition()    
+              pop_up.transition()    
                   .duration(500)    
                   .style("opacity", 0); 
         });    

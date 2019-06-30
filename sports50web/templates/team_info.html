@@ -156,7 +156,8 @@ div.tooltip {
 	<div class="nav nav-tabs" id="myTabs">
     <button id="field_button" onclick="document.getElementById('field').click();"><a id="field" class="tablinks" href="#stats" data-url="{% url 'field_breakdown' this_team.0.id %}">Field Breakdown</a></button>
     <button id="map_button" onclick="document.getElementById('map').click();"><a id="map" class="tablinks" href="#stats" data-url="{% url 'stadium_map' this_team.0.id %}">Stadium Map</a></button>
-    <button id="zones_button" onclick="document.getElementById('zones').click();"><a id="zones" class="tablinks" href="#stats" data-url="{% url 'passing_zones' this_team.0.id %}">Passing Zones</a></button>    
+    <button id="zones_button" onclick="document.getElementById('zones').click();"><a id="zones" class="tablinks" href="#stats" data-url="{% url 'passing_zones' this_team.0.id %}">Passing Zones</a></button> 
+    <button id="fp_button" onclick="document.getElementById('fp').click();"><a id="fp" class="tablinks" href="#stats" data-url="{% url 'fp_bkdwn' this_team.0.id %}">Field Position Breakdown</a></button>             
 </div>
 </div>
 

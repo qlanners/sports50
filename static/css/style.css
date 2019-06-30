@@ -1,3 +1,4 @@
+/*Style the body and add a background texture*/
 body {
 margin: 0;
 font-family: sans-serif;
@@ -14,6 +15,8 @@ line{
 	stroke-width: 4;
 }
 
+
+/*Default formats for each type of header*/
 h1 {
 	color: black;
 	font-family: 'Righteous';
@@ -55,6 +58,8 @@ h5 {
 	background: #87CEFA;
 }
 
+
+/*Paragraph tag general format*/
 p {
 	color: black;
 	font-family: 'Abel';
@@ -62,6 +67,42 @@ p {
 	padding-left: 140px;
 }
 
+
+/*Formats the various svgs*/
 .svgs {
 	text-align: center;
+}
+
+
+/*Formats the checkboxes to select years and stat type*/
+.myCheckbox {
+  font-size: 20px;
+}
+
+div.myCheckboxText {
+  font-size: 16px;
+}
+
+/*Formats the text pop_ups that display on hovering*/
+div.hover_text {	
+    position: absolute;			
+    text-align: center;			
+    width: auto;					
+    height: auto;					
+    padding: 5px;				
+    font: 24px sans-serif;		
+    background: lightsteelblue;	
+    border: 0px;		
+    border-radius: 20px;			
+    pointer-events: none; 
+}
+
+/*Formats the choice boxes that allowing toggling between stat type and years */
+div.stat_toggle {
+	position: fixed;
+	background:#00FF7F;
+	bottom: 20px;
+	left: 20px;
+	border: 3px solid #000000;
+	padding: 3px;
 }

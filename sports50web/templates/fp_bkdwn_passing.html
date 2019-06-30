@@ -1,0 +1,157 @@
+<!-- Load in all of the static files from .static -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+     <title>Field Position Breakdown Passing</title>
+    {{ script | safe }}
+  </head>
+
+<!-- Import in the style sheet -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" >
+<!-- Import in the style sheet specific to fp_breakdown -->
+  <link rel="stylesheet" href="{% static 'css/fp_breakdown_style.css' %}" type="text/css" >  
+
+  <body>
+
+    <!-- Load the field_position passing statistics data sent from views -->
+    <script type="text/javascript">var field_positions = JSON.parse('{{field_positions | safe}}');console.log(field)</script>
+
+    <!-- Load the fp_breakdwon.js file --> 
+    <script type="text/javascript" src="{% static 'fp_breakdown.js' %}"></script>    
+
+    <!-- Create the slider that allows user to change the yard line  -->
+    <div class="slidecontainer">
+      <input type="range" min="1" max="99" value="50" class="slider" id="myRange" onchange="slider()">
+    </div>
+
+    <!-- Creates the text that states the current yard line the slider is set to -->
+    <div class="yard_line_header">
+      <p class="yard_line_header">Passing Statistics for plays started <strong><span id="yard_line"></span></strong> yards from the endzone.</p>
+    </div>
+
+    <!-- The table which contains all of the stats for the chosen yard line. All of the spans
+    are updated by the slider function in fp_breakdown.js -->
+    <table id="fp_stats">
+      <tr>
+        <th></th>
+        <th>Deep Left</th>
+        <th>Deep Middle</th> 
+        <th>Deep Right</th>
+      </tr>
+      <tr>
+        <th>Total Yards</th>
+        <td><span id="dl_yards", class="stat"></span></td>
+        <td><span id="dm_yards", class="stat"></span></td> 
+        <td><span id="dr_yards", class="stat"></span></td>
+      </tr>  
+      <tr>
+        <th>Completion %</th>
+        <td><span id="dl_comp_perc", class="stat"></span></td>
+        <td><span id="dm_comp_perc", class="stat"></span></td> 
+        <td><span id="dr_comp_perc", class="stat"></span></td>
+      </tr>
+      <tr>
+        <th></th>
+        <td><span id="dl_comps", class="stat"></span></td>
+        <td><span id="dm_comps", class="stat"></span></td> 
+        <td><span id="dr_comps", class="stat"></span></td>
+      </tr>    
+      <tr>
+        <th>Touchdowns</th>
+        <td><span id="dl_td", class="stat"></span></td>
+        <td><span id="dm_td", class="stat"></span></td> 
+        <td><span id="dr_td", class="stat"></span></td>
+      </tr>
+      <tr>
+        <th>Interceptions</th>
+        <td><span id="dl_int", class="stat"></span></td>
+        <td><span id="dm_int", class="stat"></span></td> 
+        <td><span id="dr_int", class="stat"></span></td>
+      </tr>
+      <tr>
+        <th>Pick Sixes</th>
+        <td><span id="dl_p6", class="stat"></span></td>
+        <td><span id="dm_p6", class="stat"></span></td> 
+        <td><span id="dr_p6", class="stat"></span></td>
+      </tr> 
+      <tr>
+        <th>Penalties</th>
+        <td><span id="dl_pen", class="stat"></span></td>
+        <td><span id="dm_pen", class="stat"></span></td> 
+        <td><span id="dr_pen", class="stat"></span></td>
+      </tr>   
+      <tr>
+        <th><a href="https://www.sports-reference.com/blog/2012/03/features-expected-points/">EPD</a></th>
+        <td><span id="dl_dif", class="stat"></span></td>
+        <td><span id="dm_dif", class="stat"></span></td> 
+        <td><span id="dr_dif", class="stat"></span></td>
+      </tr>           
+      <tr>
+        <th style="border-top: 1px solid black"></th>
+        <th style="border-top: 1px solid black">Short Left</th>
+        <th style="border-top: 1px solid black">Short Middle</th> 
+        <th style="border-top: 1px solid black">Short Right</th>
+      </tr>  
+      <tr>
+        <th>Total Yards</th>
+        <td><span id="sl_yards", class="stat"></span></td>
+        <td><span id="sm_yards", class="stat"></span></td> 
+        <td><span id="sr_yards", class="stat"></span></td>
+      </tr>    
+      <tr>
+        <th>Completion %</th>
+        <td><span id="sl_comp_perc", class="stat"></span></td>
+        <td><span id="sm_comp_perc", class="stat"></span></td> 
+        <td><span id="sr_comp_perc", class="stat"></span></td>
+      </tr>  
+      <tr>
+        <th></th>
+        <td><span id="sl_comps", class="stat"></span></td>
+        <td><span id="sm_comps", class="stat"></span></td> 
+        <td><span id="sr_comps", class="stat"></span></td>
+      </tr>    
+      <tr>
+        <th>Touchdowns</th>
+        <td><span id="sl_td", class="stat"></span></td>
+        <td><span id="sm_td", class="stat"></span></td> 
+        <td><span id="sr_td", class="stat"></span></td>
+      </tr>  
+      <tr>
+        <th>Interceptions</th>
+        <td><span id="sl_int", class="stat"></span></td>
+        <td><span id="sm_int", class="stat"></span></td> 
+        <td><span id="sr_int", class="stat"></span></td>
+      </tr>
+      <tr>
+        <th>Pick Sixes</th>
+        <td><span id="sl_p6", class="stat"></span></td>
+        <td><span id="sm_p6", class="stat"></span></td> 
+        <td><span id="sr_p6", class="stat"></span></td>
+      </tr> 
+      <tr>
+        <th>Penalties</th>
+        <td><span id="sl_pen", class="stat"></span></td>
+        <td><span id="sm_pen", class="stat"></span></td> 
+        <td><span id="sr_pen", class="stat"></span></td>
+      </tr> 
+      <tr>
+        <th><a href="https://www.sports-reference.com/blog/2012/03/features-expected-points/">EPD</a></th>
+        <td><span id="sl_dif", class="stat"></span></td>
+        <td><span id="sm_dif", class="stat"></span></td> 
+        <td><span id="sr_dif", class="stat"></span></td>
+      </tr>         
+    </table>
+
+    <!-- Have the slider function run whenever a year is (de)selected -->
+    <script type="text/javascript">
+      d3.selectAll(".myCheckbox").on("change",slider);
+      slider();  
+    </script> 
+
+  </body>
+  
+</html>
