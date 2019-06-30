@@ -10,9 +10,9 @@
     {{ script | safe }}
   </head>
 
-<!-- Import in the style sheet -->
+  <!-- Import in the style sheet -->
   <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" >
-<!-- Import in the style sheet specific to fp_breakdown -->
+  <!-- Import in the style sheet specific to fp_breakdown -->
   <link rel="stylesheet" href="{% static 'css/fp_breakdown_style.css' %}" type="text/css" >  
 
   <body>
@@ -85,6 +85,7 @@
         <td><span id="dr_pen", class="stat"></span></td>
       </tr>   
       <tr>
+        <!-- added a link here to a page that describes what EPD stands for -->
         <th><a href="https://www.sports-reference.com/blog/2012/03/features-expected-points/">EPD</a></th>
         <td><span id="dl_dif", class="stat"></span></td>
         <td><span id="dm_dif", class="stat"></span></td> 
@@ -139,6 +140,7 @@
         <td><span id="sr_pen", class="stat"></span></td>
       </tr> 
       <tr>
+        <!-- added a link here to a page that describes what EPD stands for -->
         <th><a href="https://www.sports-reference.com/blog/2012/03/features-expected-points/">EPD</a></th>
         <td><span id="sl_dif", class="stat"></span></td>
         <td><span id="sm_dif", class="stat"></span></td> 
@@ -153,5 +155,5 @@
     </script> 
 
   </body>
-  
+
 </html>

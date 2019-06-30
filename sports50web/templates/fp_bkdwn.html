@@ -22,7 +22,7 @@
 
   <!-- Creates tabs that allow user to navigate between different statistic type -->
     <div class="tab">
-      <div class="nav nav-tabs" id="fieldTabs">
+      <div class="nav nav-tabs" id="field_tabs">
         <button id="fp_passing_button" onclick="document.getElementById('fp_passing').click();"><a id="fp_passing" class="tablinks" href="#fp_stats" data-url="{% url 'fp_bkdwn_passing' team_id %}">Passing</a></button>
       </div>
     </div>
@@ -77,24 +77,11 @@
       <div class="tab-pane active" id="fp_stats"></div>
     </div>   
 
-    <script type="text/javascript">
-      // Create a function that loads the url corresponding to the correct field_breakdown stat that is selected from the tabs
-      // at the top of the page.
-      $('#fieldTabs a').click(function (e) {
-        e.preventDefault();
-        console.log('okkkkk')
-        
-        var url = $(this).attr("data-url");
-        var href = this.hash;
-        var pane = $(this);
+    <!-- Import the field_tabs function to display the page of the selected statistic -->
+    <script type="text/javascript" src="{% static 'field_tabs.js' %}"></script> 
 
-        // Load the correct url
-        $(href).load(url)
-      });
-
-      // When the page is first loaded, select field_breakdown to show the passing statistics
-      document.getElementById("fp_passing_button").click();
-    </script>
+    <!-- When the page is first loaded, select field_breakdown to show the passing statistics -->
+    <script type="text/javascript">document.getElementById("fp_passing_button").click();</script>
 
   </body>
   

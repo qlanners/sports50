@@ -1,9 +1,6 @@
 from django.http import HttpResponse
-from django.views.generic import FormView 
-from django.db.models import F, Q
-from django.db.models import Sum
-from django.db.models import Avg
-from django.db.models import Count
+from django.views.generic import FormView
+from django.db.models import F, Q, Sum, Avg, Count
 from django.shortcuts import render, render_to_response
 from django.db.models import Case, CharField, Value, When
 import json
@@ -327,8 +324,6 @@ def fp_bkdwn_filter_passing(my_filter):
 		for t in range(2010,2018):
 			field_positions[i][t] = {}
 
-
-
 	opp_side['sl'] = list(Football_Passing_Plays.objects.values('yard_line','game__season').exclude(yard_line=0).filter(**my_filter).filter(side_of_field=2).filter(left=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
 	opp_side['sm'] = list(Football_Passing_Plays.objects.values('yard_line','game__season').exclude(yard_line=0).filter(**my_filter).filter(side_of_field=2).filter(middle=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
 	opp_side['sr'] = list(Football_Passing_Plays.objects.values('yard_line','game__season').exclude(yard_line=0).filter(**my_filter).filter(side_of_field=2).filter(right=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
@@ -349,27 +344,6 @@ def fp_bkdwn_filter_passing(my_filter):
 	midfield['dl'] = list(Football_Passing_Plays.objects.values('yard_line','game__season').exclude(yard_line=0).filter(**my_filter).filter(side_of_field=0).filter(left=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
 	midfield['dm'] = list(Football_Passing_Plays.objects.values('yard_line','game__season').exclude(yard_line=0).filter(**my_filter).filter(side_of_field=0).filter(middle=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
 	midfield['dr'] = list(Football_Passing_Plays.objects.values('yard_line','game__season').exclude(yard_line=0).filter(**my_filter).filter(side_of_field=0).filter(right=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	
-	# opp_side['sl'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=2).filter(left=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# opp_side['sm'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=2).filter(middle=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# opp_side['sr'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=2).filter(right=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# opp_side['dl'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=2).filter(left=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# opp_side['dm'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=2).filter(middle=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# opp_side['dr'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=2).filter(right=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-
-	# own_side['sl'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=1).filter(left=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# own_side['sm'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=1).filter(middle=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# own_side['sr'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=1).filter(right=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# own_side['dl'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=1).filter(left=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# own_side['dm'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=1).filter(middle=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# own_side['dr'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=1).filter(right=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	
-	# midfield['sl'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=0).filter(left=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# midfield['sm'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=0).filter(middle=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# midfield['sr'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=0).filter(right=1).filter(short=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# midfield['dl'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=0).filter(left=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# midfield['dm'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=0).filter(middle=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
-	# midfield['dr'] = list(Football_Passing_Plays.objects.values('yard_line').filter(game__season=y).filter(side_of_field=0).filter(right=1).filter(deep=1).annotate(Sum('complete')).annotate(Sum('incomplete')).annotate(Sum('touchdown')).annotate(Sum('interception')).annotate(Sum('pick_six')).annotate(Sum('penalty')).annotate(Sum('yards')).annotate(Avg('diff')))
 
 	for k,v in opp_side.items():
 		for t in range(len(v)):

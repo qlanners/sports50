@@ -2,46 +2,60 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Stadium Map</title>
+  
+  <head>
+    <meta charset="utf-8">
+    <title>Stadium Map</title>
+    {{ script | safe }}
+  </head>
 
-{{ script | safe }}
+  <!-- Import in the style sheet -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" >  
 
-</head>
+  <body>
 
-<body>
+    <!-- Load the stadiums rushing statistics data sent from views -->
+    <script type="text/javascript">var stadiums = JSON.parse('{{stadiums | safe}}');</script>
 
-<script type="text/javascript">
-  var stadiums = JSON.parse('{{stadiums | safe}}');
-</script>
-
-<script type="text/javascript" src="{% static 'stadium_map.js' %}"></script>
+    <!-- Load the stadium_map.js file --> 
+    <script type="text/javascript" src="{% static 'stadium_map.js' %}"></script>
 
 
-<div style="position: fixed; background:#00FF7F; bottom: 20px; left: 20px; border: 3px solid #000000; padding: 3px;">
-  <small style="color:Black; font-size:20px;">Use these options to toggle between statistics</small>  
-  <br>
-  <select id="stats_choice" onchange="update()">
-    <option value="touchdown__sum">Touchdowns</option>
-    <option value="tackle_for_loss__sum">Tackled for Loss</option>
-    <option value="fumble__sum">Fumbles</option>
-    <option value="penalty__sum">Penalties</option>
-  </select> 
-    <div class="myCheckboxText">
-      <input type="checkbox" class="myCheckbox" value="2010" checked> 2010 
-      <input type="checkbox" class="myCheckbox" value="2011" checked> 2011
-      <input type="checkbox" class="myCheckbox" value="2012" checked> 2012 
-      <input type="checkbox" class="myCheckbox" value="2013" checked> 2013
-      <input type="checkbox" class="myCheckbox" value="2014" checked> 2014
-      <input type="checkbox" class="myCheckbox" value="2015" checked> 2015
-      <input type="checkbox" class="myCheckbox" value="2016" checked> 2016
-      <input type="checkbox" class="myCheckbox" value="2017" checked> 2017
-    </div>
+    <!-- Create the selection options. Both a dropdown to choose between stat type and checkboxes to select years -->
+    <div class="stat_toggle">
+      
+      <small style="color:Black; font-size:20px;">Use these options to toggle between statistics</small>  
+      <br>
 
-</div>	
+      <!-- Create dropdown to select stat to view in graphics -->
+      <select id="stats_choice" onchange="update()">
+        <option value="touchdown__sum">Touchdowns</option>
+        <option value="tackle_for_loss__sum">Tackled for Loss</option>
+        <option value="fumble__sum">Fumbles</option>
+        <option value="penalty__sum">Penalties</option>
+      </select> 
 
-  <script type="text/javascript">
-  d3.selectAll(".myCheckbox").on("change",update);
-update();  
-</script>	
+      <!-- Create checkboxes to allow years to be (de)selected. Set all to default to checked -->
+      <div class="myCheckboxText">
+        <input type="checkbox" class="myCheckbox" value="2010" checked> 2010 
+        <input type="checkbox" class="myCheckbox" value="2011" checked> 2011
+        <input type="checkbox" class="myCheckbox" value="2012" checked> 2012 
+        <input type="checkbox" class="myCheckbox" value="2013" checked> 2013
+        <input type="checkbox" class="myCheckbox" value="2014" checked> 2014
+        <input type="checkbox" class="myCheckbox" value="2015" checked> 2015
+        <input type="checkbox" class="myCheckbox" value="2016" checked> 2016
+        <input type="checkbox" class="myCheckbox" value="2017" checked> 2017
+      </div>
+
+    </div>  
+
+    <!-- With the page constructed, have the page call the update function from the field_breakdown.json file to
+    populate the graphic with data. Also, everytime a year is (de)selected perform the update function again -->
+    <script type="text/javascript">
+      d3.selectAll(".myCheckbox").on("change",update);
+      update();  
+    </script> 
+
+  </body>
+
+</html>

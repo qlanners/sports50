@@ -28,7 +28,7 @@
       <br>
 
       <!-- Create dropdown to select stat to view in graphics -->
-      <select id="stats_choice" onchange="update()">
+      <select id="stats_choice" class="stat_dropdown" onchange="update()">
         <option value="touchdown__sum">Touchdowns</option>
         <option value="interception__sum">Interceptions</option>
         <option value="pick_six__sum">Pick Sixes</option>
@@ -55,7 +55,7 @@
     </div>
 
     <!-- With the page constructed, have the page call the update function from the field_breakdown.json file to
-    populate the graphic with data. -->
+    populate the graphic with data. Also, everytime a year is (de)selected perform the update function again -->
     <script type="text/javascript">
       d3.selectAll(".myCheckbox").on("change",update);
       update();  

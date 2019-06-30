@@ -2,189 +2,67 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Sports50</title>
 
- <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" >
+  <head>
+    <meta charset="utf-8">
+    <title>Sports50</title>
+    {{ script | safe }}
+  </head>
 
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="https://d3js.org/topojson.v2.min.js"></script>
+  <!-- Import in the style sheet -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" >
+  <!-- Import the style sheet for the team dropdown -->
+  <link rel="stylesheet" href="{% static 'css/dropdown.css' %}" type="text/css" >
 
-<script src="https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.js"></script>
-<!-- <script src="https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.js"></script> -->
-<!-- <script src="https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.js"></script> -->
+  <!-- Import d3 and topojson d3 which are used to create svg graphics and convert geojson data into topojson data
+  which allows for the creation of maps -->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
 
-<script type="text/javascript" src="{% static 'jquery-3.4.1.js' %}"></script>
+  <!-- Import the jquery.js script to allow us to use jquery when needed -->
+  <script type="text/javascript" src="{% static 'jquery-3.4.1.js' %}"></script>
 
+  <!-- adding unique fonts -->
+  <link href="http://fonts.googleapis.com/css?family=Righteous" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Abel" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet" type="text/css">  
 
+  <body>
 
-<!-- adding fonts -->
-<link href="http://fonts.googleapis.com/css?family=Righteous" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Abel" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet" type="text/css">
+    <!-- Create a header that acts as url back to home page -->
+    <h1><a href="{% url 'home' %}" style="text-decoration: none; color: black">Sports 50</a></h1>
 
-{{ script | safe }}
+    <h2>
+    	<!-- Create the dropdown menu, using a for loop over each team in the team model-->
+    	<div class="dropdown">
+    	  <button onclick="myFunction()" class="dropbtn">Select a Team</button>
+    	  <div id="myDropdown" class="dropdown-content">
+    		{% for team in teams %}
+    			<a href="{% url 'team_info' team.id %}">{{team.full_name}}</a>
+    		{% endfor %}    
+    	  </div>
+    	</div>
+      Team specific stats for the {{this_team.0.full_name}}. Navigate to other teams using the dropdown to the left.
+    </h2>
 
-</head>
+    <!-- Create tabs that can be used to navigate between the various graphics -->
+    <div class="tab">
+    	<div class="nav nav-tabs" id="myTabs">
+        <button id="field_button" onclick="document.getElementById('field').click();"><a id="field" class="tablinks" href="#stats" data-url="{% url 'field_breakdown' this_team.0.id %}">Field Breakdown</a></button>
+        <button id="map_button" onclick="document.getElementById('map').click();"><a id="map" class="tablinks" href="#stats" data-url="{% url 'stadium_map' this_team.0.id %}">Stadium Map</a></button>
+        <button id="zones_button" onclick="document.getElementById('zones').click();"><a id="zones" class="tablinks" href="#stats" data-url="{% url 'passing_zones' this_team.0.id %}">Passing Zones</a></button> 
+        <button id="fp_button" onclick="document.getElementById('fp').click();"><a id="fp" class="tablinks" href="#stats" data-url="{% url 'fp_bkdwn' this_team.0.id %}">Field Position Breakdown</a></button>             
+      </div>
+    </div>
 
-<!-- Page content begins. Still working on adding new features, but as of now planning
-to have the home page just have some general cool interactive graphics-->
-<body>
+    <!-- Create div to display the selected graphic -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="stats"></div>
+    </div>
 
-<style>
-	/* Setting up dropdown button */
-.dropbtn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
+    <!-- Load graphic_tabs.js which allows navigation between graphics -->
+    <script type="text/javascript" src="{% static 'graphic_tabs.js' %}"></script>
 
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown Content which will only be shown when hovered over dropdown button */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  font-size: 10;
-  font-weight: normal;
-}
-
-/* Format of seperate dropdown links */
-.dropdown-content a {
-  color: black;
-  padding: 3px 3px;
-  text-decoration: none;
-  display: block;
-  font-size: 5;
-}
-
-/* Changes dropdown button color when hovered over */
-.dropdown-content a:hover {background-color: #ddd;}
-
-/* Shows the dropdown menu when hovered over */
-.dropdown:hover .dropdown-content {display: block;}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-/* Style the tab */
-.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
-
-/* Style the buttons that are used to open the tab content */
-.tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
-  transition: 0.3s;
-}
-
-/* Change background color of buttons on hover */
-.tab button:hover {
-  background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
-  background-color: #ccc;
-}
-
-/* Style the tab content */
-.tabcontent {
-  display: none;
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  border-top: none;
-}
-
-.tablinks {
-	text-decoration: none;
-	font: 16px sans-serif;
-}
-
-
-/* Tooltip that is used on all graphics. Customized inside of the various graphic html files if needed. */
-div.tooltip {	
-    position: absolute;			
-    text-align: center;			
-    width: auto;					
-    height: auto;					
-    padding: 5px;				
-    font: 12px sans-serif;		
-    background: lightsteelblue;	
-    border: 0px;		
-    border-radius: 20px;			
-    pointer-events: none;			
-}
-
-</style>
-
-<h1><a href="{% url 'home' %}" style="text-decoration: none; color: black">Sports 50</a></h1>
-
-<h2>
-	<!-- Create the dropdown menu, using a for loop over each team in the team model-->
-	<div class="dropdown">
-	  <button onclick="myFunction()" class="dropbtn">Select a Team</button>
-	  <div id="myDropdown" class="dropdown-content">
-		{% for team in teams %}
-				<a href="{% url 'team_info' team.id %}">{{team.full_name}}</a>
-		{% endfor %}    
-	  </div>
-	</div>
-
-	Team specific stats for the {{this_team.0.full_name}}. Navigate to other teams using the dropdown to the left.
-</h2>
-
-<div class="tab">
-	<div class="nav nav-tabs" id="myTabs">
-    <button id="field_button" onclick="document.getElementById('field').click();"><a id="field" class="tablinks" href="#stats" data-url="{% url 'field_breakdown' this_team.0.id %}">Field Breakdown</a></button>
-    <button id="map_button" onclick="document.getElementById('map').click();"><a id="map" class="tablinks" href="#stats" data-url="{% url 'stadium_map' this_team.0.id %}">Stadium Map</a></button>
-    <button id="zones_button" onclick="document.getElementById('zones').click();"><a id="zones" class="tablinks" href="#stats" data-url="{% url 'passing_zones' this_team.0.id %}">Passing Zones</a></button> 
-    <button id="fp_button" onclick="document.getElementById('fp').click();"><a id="fp" class="tablinks" href="#stats" data-url="{% url 'fp_bkdwn' this_team.0.id %}">Field Position Breakdown</a></button>             
-</div>
-</div>
-
-  <div class="tab-content">
-    <div class="tab-pane active" id="stats"></div>
-  </div>
-
-<script type="text/javascript">
-
-$('#myTabs a').click(function (e) {
-	e.preventDefault();
+  </body>
   
-	var url = $(this).attr("data-url");
-  	var href = this.hash;
-  	var pane = $(this);
-	
-
-	// ajax load from data-url
-	$(href).load(url)
-});
-
-
-document.addEventListener("DOMContentLoaded", function(event) { 
-	console.log('heyoo')
-    document.getElementById("field_button").click();
- });
-</script>
-
-</body>
 </html>

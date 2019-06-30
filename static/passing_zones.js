@@ -1,6 +1,6 @@
 var passingZones = function(zones_complete) {
-    var svg2 = d3.select("#second_svg")
-    var div = d3.select("#second_svg_tooltip")
+    var svg2 = d3.select("#pass_zones_svg")
+    var div = d3.select("#passing_zones_pop_up")
 	svg2.selectAll("rect").data(zones_complete).enter().append("rect").attr("height","250")
 	.attr("width","200")
 	.attr("x",function(d,i){return 197+((i%3)*200)}).attr("y",function(d,i) { if(i<3){return "286"} return"36" }).attr("fill",function(d,i) { if((d[0]/(d[0]+d[1]))<0.5){return "red"} return"green" }).attr("opacity",function(d,i){return (d[0]/(d[0]+d[1]))*0.5 }).attr("stroke","black")

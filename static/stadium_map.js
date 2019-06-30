@@ -11,8 +11,8 @@ var path = d3.geoPath();
 
 var stadium_map = function(stadiums, s) {
 
-    var svg3 = d3.select("#third_svg")
-    var div = d3.select("#third_svg_tooltip")
+    var svg3 = d3.select("#map_svg")
+    var pop_up = d3.select("#map_svg_pop_up")
     svg3.selectAll("circle").remove();
     
     svg3.selectAll("dot")
@@ -27,10 +27,10 @@ var stadium_map = function(stadiums, s) {
       .style("fill", function(d){if (d[5]==1) { return "gold" } else { return "blue"}})
           .on("mouseover", function(d) {  
             var stat_name = s.options[s.selectedIndex].text;
-              div.transition()    
+              pop_up.transition()    
                   .duration(200)    
                   .style("opacity", .9);    
-              div.html(function(){if (stat_name=='% Complete') {
+              pop_up.html(function(){if (stat_name=='% Complete') {
                 return d[2] + "<br/>" + "-" + "<br/>" + d[1] + "," + d[0] + "<br/>" + "(" + d[7].toFixed(2) +stat_name+")"}
                 else {
                   return d[2] + "<br/>" + "-" + "<br/>" + d[1] + "," + d[0] + "<br/>" + "(" + d[7] + " "+stat_name+")"
@@ -39,7 +39,7 @@ var stadium_map = function(stadiums, s) {
                   .style("top", (d3.event.pageY - 28) + "px");  
               })          
           .on("mouseout", function(d) {   
-              div.transition()    
+              pop_up.transition()    
                   .duration(500)    
                   .style("opacity", 0); 
         });             
@@ -48,7 +48,7 @@ var stadium_map = function(stadiums, s) {
 // function create_map(stadiums){
 //   var svg3 = d3.select("#svg3").append("svg").attr("width", "960").attr("height", "600").attr("id", "third_svg");
 
-//   var div = d3.select("body").append("div")
+//   var pop_up = d3.select("body").append("pop_up")
 //       .attr("class", "tooltip").attr("id","third_svg_tooltip")      
 //       .style("opacity", 0); 
 

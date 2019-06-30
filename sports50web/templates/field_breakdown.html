@@ -15,25 +15,25 @@
 
   <body>
     <!-- Create header and description of page -->
-    <h3>Statistics by field position</h3>
+    <h3>Statistics by field zone</h3>
     <p>Hover over different areas of the football field below to observe how many instances of the selected statistic occured on plays started from within each ten yard interval.</p>
 
 
-  <!-- Creates tabs that allow user to navigate between different statistic type -->
+    <!-- Creates tabs that allow user to navigate between different statistic type -->
     <div class="tab">
-      <div class="nav nav-tabs" id="fieldTabs">
+      <div class="nav nav-tabs" id="field_tabs">
         <button id="field_passing_button" onclick="document.getElementById('field_passing').click();"><a id="field_passing" class="tablinks" href="#field_stats" data-url="{% url 'field_breakdown_passing' team_id %}">Passing</a></button>
         <button id="field_rushing_button" onclick="document.getElementById('field_rushing').click();"><a id="field_rushing" class="tablinks" href="#field_stats" data-url="{% url 'field_breakdown_rushing' team_id %}">Rushing</a></button>    
       </div>
     </div>
 
-  <!-- Sends the chosen tab to the page -->
+    <!-- Sends the chosen tab to the page -->
     <div class="tab-content">
       <div class="tab-pane active" id="field_stats"></div>
     </div>  
 
 
-  <!-- Create a div to hold the svg -->
+    <!-- Create a div to hold the svg -->
     <div id="field_svg_div" class="svgs">
       <script type="text/javascript">
 
@@ -64,25 +64,14 @@
                       .attr("width", function(d){ return d.width})
                       .attr("height", function(d){ return d.height});
       </script>
+
     </div>
 
-    <script type="text/javascript">
-      // Create a function that loads the url corresponding to the correct field_breakdown stat that is selected from the tabs
-      // at the top of the page.
-      $('#fieldTabs a').click(function (e) {
-        e.preventDefault();
-        
-        var url = $(this).attr("data-url");
-        var href = this.hash;
-        var pane = $(this);
+    <!-- Import the field_tabs function to display the page of the selected statistic -->
+    <script type="text/javascript" src="{% static 'field_tabs.js' %}"></script> 
 
-        // Load the correct url
-        $(href).load(url)
-      });
-
-      // When the page is first loaded, select field_breakdown to show the passing statistics
-      document.getElementById("field_passing_button").click();
-    </script>
+    <!-- When the page is first loaded, select field_breakdown to show the passing statistics -->
+    <script type="text/javascript">document.getElementById("field_passing_button").click();</script>
 
   </body>
 

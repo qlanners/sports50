@@ -2,118 +2,102 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Stadium Map</title>
+  <head>
+    <meta charset="utf-8">
+    <title>Stadium Map</title>
+    {{ script | safe }}
+  </head>
 
-{{ script | safe }}
+  <!-- Import in the style sheet -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" >
 
-</head>
+  <body>
 
-<body>
+    <!-- Add additional css styling for state borders in map -->
+    <style>
+      .state-borders {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 0.5px;
+        stroke-linejoin: round;
+        stroke-linecap: round;
+        pointer-events: none;
+      }
+    </style>
 
-<style>
+    <h3>Per stadium statistics</h3>
+    <p>
+      Geospatial Representation of statistics in seperate NFL stadiums (excluding Super Bowls). <br>
+      The size of the circle is relative to the number of the chosen statastic in that stadium in the selected years. 
+      <br>
+      Hover over each stadium for more information. (Gold circles indicate a Super Bowl has been held in that stadium).
+    </p>
 
-.myCheckbox {
-	font-size: 20px;
-}
+    <!-- Creates tabs that allow user to navigate between different statistic type -->
+    <div class="tab">
+      <div class="nav nav-tabs" id="field_tabs">
+        <button id="map_passing_button" onclick="document.getElementById('map_passing').click();"><a id="map_passing" class="tablinks" href="#stats2" data-url="{% url 'stadium_map_passing' team_id %}">Passing</a></button>
+        <button id="map_rushing_button" onclick="document.getElementById('map_rushing').click();"><a id="map_rushing" class="tablinks" href="#stats2" data-url="{% url 'stadium_map_rushing' team_id %}">Rushing</a></button>    
+      </div>
+    </div>
 
-div.myCheckboxText {
-	font-size: 16px;
-}
+    <!-- Sends the chosen tab to the page -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="stats2"></div>
+    </div>
 
-.state-borders {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 0.5px;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  pointer-events: none;
-}
-</style>
+    <!-- Create a div to hold the svg -->
+    <div id="map_svg_div" class="svgs">
+      <script type="text/javascript">
 
-  <h3>Per stadium statistics</h3>
-  <p>Geospatial Representation of statistics in seperate NFL stadiums (excluding Super Bowls). <br>
-    The size of the circle is relative to the number of the chosen statastic in that stadium in the selected years. <br>
-    Hover over each stadium for more information. (Gold circles indicate a Super Bowl has been held in that stadium).
-  </p>
+        // Create the svg variable with the given height and width
+        var width = 960;
+        var height = 600;
+        var svg3 = d3.select("#map_svg_div").append("svg").attr("width", "960").attr("height", "600").attr("id", "map_svg");
 
-<div class="tab">
-  <div class="nav nav-tabs" id="fieldTabs">
-    <button id="map_passing_button" onclick="document.getElementById('map_passing').click();"><a id="map_passing" class="tablinks" href="#stats2" data-url="{% url 'stadium_map_passing' team_id %}">Passing</a></button>
-    <button id="map_rushing_button" onclick="document.getElementById('map_rushing').click();"><a id="map_rushing" class="tablinks" href="#stats2" data-url="{% url 'stadium_map_rushing' team_id %}">Rushing</a></button>    
-</div>
-</div>
-
-
-  <div class="tab-content">
-    <div class="tab-pane active" id="stats2"></div>
-  </div>
-
-<script type="text/javascript">
-  var width = 960;
-  var height = 600;
+        // Create a varibale pop_up which will hold the text that pops up when field sections are hovered over
+        // Takes style from class hover_text.
+        var pop_up = d3.select("#map_svg_div").append("div")
+            .attr("class", "hover_text").attr("id","map_svg_pop_up")      
+            .style("opacity", 0);
 
 
-  var projection = d3.geoAlbersUsa()
-      .scale(1250)
-      .translate([width / 2, height / 2]);
+        // Set the projection variables that are used to map the json data and plot the location of each stadium
+        var projection = d3.geoAlbersUsa()
+            .scale(1250)
+            .translate([width / 2, height / 2]);
 
-  var path = d3.geoPath();
-</script>
+        var path = d3.geoPath();
 
-<div id="svg3" class="svgs">
-  <script type="text/javascript">
-  var svg3 = d3.select("#svg3").append("svg").attr("width", "960").attr("height", "600").attr("id", "third_svg");
+        // Create the base map without any data
+        d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+          if (error) throw error;
 
-  var div = d3.select("body").append("div")
-      .attr("class", "tooltip").attr("id","third_svg_tooltip")      
-      .style("opacity", 0); 
+          svg3.append("g")
+            .attr("class", "states")
+            .selectAll("path")
+            .data(topojson.feature(us, us.objects.states).features)
+            .enter().append("path")
+            .attr("d", path);
 
-  svg3.append("rect").attr("height",height).attr("width",width).attr("fill","white").attr("opacity",0)   
+          svg3.append("path")
+            .attr("class", "state-borders")
+            .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+        });
 
-  d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
-    if (error) throw error;
+      </script>
 
-    svg3.append("g")
-        .attr("class", "states")
-      .selectAll("path")
-      .data(topojson.feature(us, us.objects.states).features)
-      .enter().append("path")
-        .attr("d", path);
+    </div>
 
-    svg3.append("path")
-        .attr("class", "state-borders")
-        .attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
-   });    
-  </script>
-</div>
+    <!-- Import the field_tabs function to display the page of the selected statistic -->
+    <script type="text/javascript" src="{% static 'field_tabs.js' %}"></script> 
 
-<script type="text/javascript">
-$('#fieldTabs a').click(function (e) {
-  e.preventDefault();
-  
-  var url = $(this).attr("data-url");
-    var href = this.hash;
-    var pane = $(this);
-  
+    <!-- When the page is first loaded, select field_breakdown to show the passing statistics -->
+    <script type="text/javascript">document.getElementById("map_passing_button").click();</script>
 
-  // ajax load from data-url
-  $(href).load(url)
-});
+    <!-- Add some extra breaks to allow room to scroll and view whole map -->
+    <br><br><br><br><br><br><br><br><br>
 
-document.getElementById("map_passing_button").click();
-</script>
+  </body>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-</body>
 </html>
